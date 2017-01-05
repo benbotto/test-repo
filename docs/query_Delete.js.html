@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: query/Delete.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,87 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: query/Delete.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
+require('insulin').factory('ndm_Delete',
+  ['deferred', 'ndm_Query', 'ndm_assert'], ndm_DeleteProducer);
 
-    <h3> </h3>
+function ndm_DeleteProducer(deferred, Query, assert) {
+  /**
+   * A representation of a DELETE query.
+   * @extends Query
+   */
+  class Delete extends Query {
+    /**
+     * Initialize the query.
+     * @param {From} from - An instance of a From.
+     * @param {string} tableAlias - The unique alias of the table from which
+     * records will be deleted.  Optional, defaults to the alias of the from
+     * table.
+     */
+    constructor(from, tableAlias) {
+      super(from.database, from.escaper, from.queryExecuter);
 
+      this._from = from;
 
+      if (tableAlias) {
+        // Alias provided.  Get the meta from the TableMetaList instance.
+        assert(this._from._tableMetaList.tableMetas.has(tableAlias),
+          `"${tableAlias}" is not a valid table alias.`);
 
+        this._delTableMeta = this._from._tableMetaList.tableMetas.get(tableAlias);
+      }
+      else {
+        // Use the FROM table.
+        this._delTableMeta = this._from.getFromMeta();
+      }
+    }
 
+    /**
+     * Create the delete SQL.
+     * @return {string} The SQL representation of the DELETE statement.
+     */
+    toString() {
+      return this.buildQuery().sql;
+    }
 
+    /**
+     * Execute the query.
+     * @return {Promise} A promise instance that will be resolved with an
+     * object.  The object will have an affectedRows property.  If there is a
+     * failure executing the query, the returned promise will be rejected with
+     * that error.
+     */
+    execute() {
+      const defer     = deferred();
+      const queryMeta = this.buildQuery();
 
+      this.queryExecuter.delete(queryMeta.sql, queryMeta.params, function(err, result) {
+        if (err)
+          defer.reject(err);
+        else
+          defer.resolve({affectedRows: result.affectedRows});
+      });
 
+      return defer.promise;
+    }
+  }
 
+  return Delete;
+}
 
-
-    
-
-
-
-
-
+</code></pre>
+        </article>
+    </section>
 
 
 

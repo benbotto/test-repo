@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: query/DeleteModel.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,43 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: query/DeleteModel.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
+require('insulin').factory('ndm_DeleteModel',
+  ['ndm_Delete', 'ndm_MutateModel'], ndm_DeleteModelProducer);
 
-    <h3> </h3>
+function ndm_DeleteModelProducer(Delete, MutateModel) {
+  /**
+   * A Query class that allows for quickly deleting of models by ID.
+   * @extends MutateModel
+   */
+  class DeleteModel extends MutateModel {
+    /**
+     * Create a Delete instance.
+     * @param {ModelTraverse~ModelMeta} meta - A meta object as created by the
+     * modelTraverse class.
+     * @return {Delete} A Delete Query instance representing the DELETE query.
+     */
+    createQuery(meta) {
+      return new Delete(super.createQuery(meta));
+    }
+  }
 
+  return DeleteModel;
+}
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: converter/utcConverter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,42 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: converter/utcConverter.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
+require('insulin').factory('ndm_utcConverter', ndm_utcConverterProducer);
 
-    <h3> </h3>
+function ndm_utcConverterProducer(moment) {
+  /** A converter that converts dates to a UTC string in ISO8601 format. */
+  class UTCConverter {
+    /**
+     * Convert JavaScript Date object to a UTC string fit for saving.
+     * @param {Date} date - A native JavaScript Date object.
+     * @return {string} An ISO8601 representation of the string, in zulu
+     * (UTC) time, or null if date is null or undefined.
+     */
+    onSave(date) {
+      if (date === null || date === undefined || date === '')
+        return null;
+      return moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+    }
+  }
 
+  // Singleton.
+  return new UTCConverter();
+}
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+</code></pre>
+        </article>
+    </section>
 
 
 
