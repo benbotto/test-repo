@@ -1,7 +1,7 @@
 
 Work in progress.
 
-[Tutorials](src/tutorial/getting-started.md) [Tutorials](tutorial/getting-started.md) [Tutorials](./src/tutorial/getting-started.md)
+[Tutorials](tutorial/getting-started.md) [Tutorials](./tutorial/getting-started.md)
 
 ### Development Notes
 
