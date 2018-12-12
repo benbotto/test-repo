@@ -2,6 +2,7 @@ Work in progress.
 
 [Tutorials](tutorial/getting-started.md)
 [Tutorials](./tutorial/getting-started.md)
+[Tutorials](/tutorial/getting-started.md)
 
 ### Development Notes
 
