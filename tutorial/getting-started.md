@@ -1,3 +1,0 @@
-## Connecting
-
-Here's how.
