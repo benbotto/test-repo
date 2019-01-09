@@ -186,7 +186,7 @@ spec:
   type: NodePort
 ```
 
-The metadata should look familiar, as it's mostly the same as the deployment resource.  The `spec.selector` defines which pods this `NodePort` should target, and `spec.ports` says that incoming traffic on port 80 should target port 3000 on the matched pods.  Note that k8s will assign a virtual IP to the service, known as a `ClusterIP`, and allocate a high-number port that each node will proxy to the service.  That is, once deployed you'll be able to access the API externally using 
+The metadata should look familiar, as it's mostly the same as the deployment resource.  The `spec.selector` defines which pods this `NodePort` should target, and `spec.ports` says that incoming traffic on port 80 should target port 3000 on the matched pods.  Note that k8s will assign a virtual IP to the service, known as a `ClusterIP`, and allocate a high-number port that each node will proxy to the service.  That is, once deployed you'll be able to access the API externally using an IP and port that k8s assigns. 
 
 We also have to define our chart in [`k8s/Chart.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/Chart.yaml) file in the `k8s` folder.  This file has some self-explanatory information about the Helm chart, such a the chart's version, name, and description.
 
@@ -197,7 +197,7 @@ description: A Helm chart for the k8s-tutorial-api.
 name: k8s-tutorial-api
 ```
 
-Finally, we need to define the values that Helm will pass to our templates, like the Docker image tag and the number of replicas.  In the `k8s` file define [`values.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/values.yaml) like so.
+Finally, we need to define the values that Helm will pass to our templates, like the Docker image tag and the number of replicas.  In the `k8s` folder define [`values.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/values.yaml) like so.
 
 ```
 replicaCount: 1
@@ -268,7 +268,7 @@ You can connect to the service via a web browser by issuing the command `minikub
 
 Right now, connecting to our API is a bit obscure given that it's only accessible over an ephemeral port.  Ideally we should be able to connect to our API on port 80.  We'll use an [ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/) to manage external access.  An ingress resource defines rules that allow inbound connections to access services within the cluster.  Those rules require an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) to be running inside the cluster.  There are a number of different controllers to choose from, and the default varies between cloud providers.  Minikube by default uses the [nginx-ingress](https://github.com/helm/charts/tree/master/stable/nginx-ingress) controller, and that's the one we're going to use.  Since it's Minikube's default, we could use it implicitly, but it's best to explicitly install a controller as a dependency.  That way if we later deploy to a cloud provider we can rest assured that the same controller will be used in all our environments.
 
-Like the applications we develop, Helm charts can have dependencies.  Helm is, after all, a package manager.  Sub-charts can be manually added to our `k8s/charts`  directory, or, alternatively, we can add a `requirements.yaml` file and declare dependencies in a few short lines.  We'll use the latter method, so create [`k8s/requirements.yaml`](https://github.com/benbotto/k8s-tutorial-api/blob/1.2.0/k8s/requirements.yaml).
+Like the applications we develop, Helm charts can have dependencies.  Helm is, after all, a package manager.  Subcharts can be manually added to our `k8s/charts`  directory, or, alternatively, we can add a `requirements.yaml` file and declare dependencies in a few short lines.  We'll use the latter method, so create [`k8s/requirements.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/requirements.yaml).
 
 ```
 dependencies:
