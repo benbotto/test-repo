@@ -279,7 +279,7 @@ dependencies:
 
 Note that the repository url is the "stable" Helm repository, found by executing `helm repo list`, and 1.1.3 is the latest version of the nginx-ingress *chart* at the time or writing.  You can find packages using `helm search`.
 
-Now we just need to define some ingress rules, specifying where to route incoming traffic.  Our routing rules are simple--route all HTTP traffic to our API service--but keep in mind that the nginx-ingress controller provides powerful capabilities.  It allows you to route traffic to different services based on path (a.k.a. layer-7 routing), add sticky sessions, do TLS terminiation, etc.  Anyway, go on and define [`k8s/templates/ingress.yaml`](https://github.com/benbotto/k8s-tutorial-api/blob/1.2.0/k8s/templates/ingress.yaml).
+Now we just need to define some ingress rules, specifying where to route incoming traffic.  Our routing rules are simple--route all HTTP traffic to our API service--but keep in mind that the nginx-ingress controller provides powerful capabilities.  It allows you to route traffic to different services based on path (a.k.a. layer-7 routing), add sticky sessions, do TLS terminiation, etc.  Anyway, go on and define [`k8s/templates/ingress.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/templates/ingress.yaml).
 
 ```
 apiVersion: extensions/v1beta1
@@ -335,7 +335,7 @@ All said and done, if you connect to the IP of your cluster (`minikube ip`) on p
 
 We'll conclude by adding a MySQL dependency to our application.  Using vanilla k8s it would involve making a [stateful set](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) to define a new pod, a new [service definition](https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service) to allow communication with the database, a [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes) to manage non-volatile storage, and a [persistent volume claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) so that the new pod can use the volume.  But golly, that's an awful lot of work.  Here's where Helm can help us.
 
-There's a [Helm chart for MySQL](https://github.com/helm/charts/tree/master/stable/mysql) that does the heavy lifting for us.  We can declare MySQL as a dependency of our `k8s-tutorial-api` chart, then customize it to our liking.  Let's update [`k8s/requirements.yaml`](https://github.com/benbotto/k8s-tutorial-api/blob/1.3.0/k8s/requirements.yaml).
+There's a [Helm chart for MySQL](https://github.com/helm/charts/tree/master/stable/mysql) that does the heavy lifting for us.  We can declare MySQL as a dependency of our `k8s-tutorial-api` chart, then customize it to our liking.  Let's update [`k8s/requirements.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/requirements.yaml).
 
 ```
 dependencies:
@@ -364,7 +364,7 @@ rm mysql-password mysql-root-password
 
 The above commands assume you're using some sort of \*nix environment.  If not, you can create the two files using a text editor, but bear in mind that some editors automatically add newlines at the end of files, and that will cause problems with the secret.  Also, the files are removed after storing the secret so that they're not inadvertently committed along side the code.  Outside of the k8s context, where to keep your passwords and how to share them with other developers is up to you.  LastPass or the likes might be a good choice.  Anyway, the files must be named `mysql-password` and `mysql-root-password`, as shown in the [MySQL chart's notes](https://github.com/helm/charts/blob/master/stable/mysql/templates/NOTES.txt).
 
-Now we need to specify values for the MySQL subchart.  Overriding subchart values is discussed in depth, here: [https://docs.helm.sh/chart_template_guide/#subcharts-and-global-values](https://docs.helm.sh/chart_template_guide/#subcharts-and-global-values).  We'll customize the database, user, and passwords, plus we'll add some initialization scripts to create a table and fill in some data.  Generally a migration tool would be used for that latter part, but for our needs this will suffice.  Here's the latest and greatest [`k8s/values.yaml`](https://github.com/benbotto/k8s-tutorial-api/blob/1.3.0/k8s/values.yaml) file.
+Now we need to specify values for the MySQL subchart.  Overriding subchart values is discussed in depth, here: [https://docs.helm.sh/chart_template_guide/#subcharts-and-global-values](https://docs.helm.sh/chart_template_guide/#subcharts-and-global-values).  We'll customize the database, user, and passwords, plus we'll add some initialization scripts to create a table and fill in some data.  Generally a migration tool would be used for that latter part, but for our needs this will suffice.  Here's the latest and greatest [`k8s/values.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/values.yaml) file.
 
 ```
 # API section.
@@ -428,7 +428,7 @@ Now that the database is up and running, we'll connect our API to the database a
 yarn add mysql2
 ```
 
-And we'll update our [`app.js`](https://github.com/benbotto/k8s-tutorial-api/blob/1.3.0/app.js) file with a new `users` route that, when hit, returns all the users in the system.
+And we'll update our [`app.js`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/app.js) file with a new `users` route that, when hit, returns all the users in the system.
 
 ```javascript
 async function main() {
@@ -474,7 +474,7 @@ async function main() {
 main();
 ```
 
-We've added code to open and close the database, and a new `GET /users` route.  Note that the MySQL host, user, database, and password all come from environment variables.  Our [`k8s/templates/deployment.yaml`](https://github.com/benbotto/k8s-tutorial-api/blob/1.3.0/k8s/templates/deployment.yaml) file needs to be updated to provide these variables to our `k8s-tutorial-api` container.
+We've added code to open and close the database, and a new `GET /users` route.  Note that the MySQL host, user, database, and password all come from environment variables.  Our [`k8s/templates/deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/templates/deployment.yaml) file needs to be updated to provide these variables to our `k8s-tutorial-api` container.
 
 ```
 apiVersion: apps/v1
