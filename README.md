@@ -95,7 +95,7 @@ Where `<VERSION>` matches the version in your package.json file (e.g. `1.0.1`). 
 
 #### Make a Local Cluster and Initialize Tiller
 
-Now that we have a basic API, we need to start thinking about deploying to a k8s cluster.  In this tutorial we'll use Minikube to make a local cluster, so fire it up.
+Now that we have a basic API, we need to start thinking about deploying to a k8s cluster.  A cluster is a group of one or more virtual or physical machines, called nodes in k8s terms.  In this tutorial we'll use Minikube to make a local cluster, so fire it up.
 
 ```
 minikube start
@@ -157,11 +157,11 @@ spec:
           periodSeconds: 5
 ```
 
-The deployment defines a ReplicaSet that will bring up pods.  A pod is a group of one or more containers.  Pods are created on nodes, which are physical or virtual machines.  The number of pods created is defined by the `spec.replicas` property, and the name of the resulting pods will be based on the `name` property.
+The deployment defines a [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/) that will bring up pods.  A pod is a group of one or more containers running on one or more nodes.  The number of pods created is defined by the `spec.replicas` property, and the name of the resulting pods will be based on the `name` property.
 
 The above deployment is pretty much identical to the [deployment definition](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) in the k8s docs, so take a minute to read the manual.  There are some key differences, though.  First off, some variables are used, like `{{ .Values.image.tag }}`.  The Helm CLI can read Go templates, which allows users to add dynamic content to manifest files.  More on that in a bit.  Second, the [recommended labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) are used in the `metadata.labels` section.  These labels uniquely define each resource in the overall system, and other resources can match these labels.  Third, we've used our Docker image, `avejidah/k8s-tutorial-api` in my case, which exposes the API on port 3000.  And lastly, we've added a specification for health checks.
 
-Now we need to expose the API so that we can get external traffic into our cluster.  We'll do this with a [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)-type service.  This will cause k8s to allocate and assign a port to each node, and incoming traffic on that port will be proxied to our API service.  Alongside the `deployment.yaml` file, create [`service.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/templates/service.yaml) and populate it with the following.
+Now we need to expose the API so that we can get external traffic into our cluster.  We'll do this with a [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)-type service.  This will cause k8s to allocate and assign a port to each node, and incoming traffic on that port will be proxied to our API service.  Alongside the [`k8s/templates/deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/templates/deployment.yaml) file, create [`k8s/templates/service.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/templates/service.yaml) and populate it with the following.
 
 ```
 kind: Service
