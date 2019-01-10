@@ -277,7 +277,7 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
 ```
 
-Note that the repository url is the "stable" Helm repository, found by executing `helm repo list`, and 1.1.3 is the latest version of the nginx-ingress *chart* at the time or writing.  You can find packages using `helm search`.
+Note that the repository url is the "stable" Helm repository, found by executing `helm repo list`, and 1.1.3 is the latest version of the nginx-ingress *chart* at the time of writing.  You can find packages using `helm search`.
 
 Now we just need to define some ingress rules, specifying where to route incoming traffic.  Our routing rules are simple--route all HTTP traffic to our API service--but keep in mind that the nginx-ingress controller provides powerful capabilities.  It allows you to route traffic to different services based on path (a.k.a. layer-7 routing), add sticky sessions, do TLS terminiation, etc.  Anyway, go on and define [`k8s/templates/ingress.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/templates/ingress.yaml).
 
@@ -307,7 +307,7 @@ spec:
           servicePort: 80
 ```
 
-The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), hence the quoted `false`.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.
+The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), that's why `false` is quoted.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.
 
 We need to enable the ingress addon in Minikube.
 
@@ -329,7 +329,7 @@ helm upgrade k8s-tutorial-api ./k8s
 
 You'll now see a few new services for the nginx-controller (`kubectl get services`).  One is the ingress controller itself, and the other is a [default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/).  The latter is used to service requests if no backend service can be reached, or if a request to an unknown path is requested.
 
-All said and done, if you connect to the IP of your cluster (`minikube ip`) on port 80, you should get a response from the API.  If you're following along with the code, then your code should be comparable to my version 1.2.0: 
+All said and done, if you connect to the IP of your cluster (`minikube ip`) on port 80, you should get a response from the API.  If you're following along with the code, then your code should be comparable to my version 1.2.0: [https://github.com/benbotto/k8s-tutorial-api/tree/1.2.0](https://github.com/benbotto/k8s-tutorial-api/tree/1.2.0).
 
 #### Add a Database
 
