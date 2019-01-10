@@ -188,7 +188,7 @@ spec:
 
 The metadata should look familiar, as it's mostly the same as the deployment resource.  The `spec.selector` defines which pods this `NodePort` should target, and `spec.ports` says that incoming traffic on port 80 should target port 3000 on the matched pods.  Note that k8s will assign a virtual IP to the service, known as a `ClusterIP`, and allocate a high-number port that each node will proxy to the service.  That is, once deployed you'll be able to access the API externally using an IP and port that k8s assigns. 
 
-We also have to define our chart in [`k8s/Chart.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/Chart.yaml) file in the `k8s` folder.  This file has some self-explanatory information about the Helm chart, such a the chart's version, name, and description.
+We also have to define our chart in [`k8s/Chart.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/Chart.yaml).  This file has some self-explanatory information about the Helm chart, such a the chart's version, name, and description.
 
 ```
 apiVersion: v1
