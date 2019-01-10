@@ -21,7 +21,7 @@ If you’re going to follow along with the remainder of this tutorial, the follo
 
 #### Making an API Image
 
-With the prerequisites in place, we’re going to build a trivial “Hello, world” API using Node.js and Express.  (This step is optional: you can instead use my avejidah/k8s-tutorial-api:1.0.1 image.)  Start by making a new `k8s-tutorial-api` directory, initializing npm, and installing express and forever as dependencies.
+With the prerequisites in place, we’re going to build a trivial “Hello, world” API using Node.js and Express.  Start by making a new `k8s-tutorial-api` directory, initializing npm, and installing express and forever as dependencies.
 
 ```
 npm install -g yarn # Feel free to use npm instead of yarn.
