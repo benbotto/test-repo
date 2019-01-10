@@ -414,7 +414,7 @@ If you want, you can get a bash shell running in the MySQL container and take a 
 kubectl exec -it k8s-tutorial-api-mysql-5f6bccc754-zwb5k -- bash
 ```
 
-Our configured values will be set as environmental variables (`env |grep MYSQL`).  You can connect to the database like this.
+Within the container, our configured values will be set as environmental variables (`env |grep MYSQL`).  You can connect to the database like this.
 
 ```
 mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
