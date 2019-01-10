@@ -542,3 +542,17 @@ helm upgrade k8s-tutorial-api ./k8s --set replicaCount=3,image.tag=1.3.0
 ```
 
 If everything goes smoothly, you should be able to hit the new `/users` route and get back an array of users.
+
+#### Cleaning Up
+
+That concludes the tutorial.  Hopefully it helps you to get started with deployment orchestration.  If you want to clean everything up, here's how you can wipe out Minikube.
+
+```
+minikube stop
+minikube delete
+rm -rf ~/.minikube
+kubectl config unset clusters.minikube
+kubectl config unset users.minikube
+kubectl config unset contexts.minikube
+```
+
