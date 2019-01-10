@@ -422,7 +422,7 @@ mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
 
 #### Connecting the API to the Database
 
-Now that the database is up and running, we'll connect our API to the database and runs some queries.  Let's add a [MySQL driver](https://github.com/sidorares/node-mysql2) to our JavaScript code.
+Now that the database is up and running, we'll connect our API to the database and use it.  Let's add a [MySQL driver](https://github.com/sidorares/node-mysql2) to our JavaScript code.
 
 ```
 yarn add mysql2
@@ -474,7 +474,7 @@ async function main() {
 main();
 ```
 
-We've added code to open and close the database, and a new `GET /users` route.  Note that the MySQL host, user, database, and password all come from environment variables.  Our [`k8s/templates/deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/templates/deployment.yaml) file needs to be updated to provide these variables to our `k8s-tutorial-api` container.
+We've added code to open and close the database connection, and a new `GET /users` route.  Note that the MySQL host, user, database, and password all come from environment variables.  Our [`k8s/templates/deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/templates/deployment.yaml) file needs to be updated to provide these variables to our `k8s-tutorial-api` container.
 
 ```
 apiVersion: apps/v1
