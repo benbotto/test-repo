@@ -210,7 +210,7 @@ If you have followed along successfully so far, then your application should loo
 
 #### Installing the Chart
 
-With our deployment and service defined, we can install the chart using helm.  Let's deploy it using the newly-created Docker image, 1.1.0, with 3 replicas.
+With our deployment and service defined, we can install the chart using Helm.  Let's deploy it using the newly-created Docker image, 1.1.0, with 3 replicas.
 
 ```
 helm install --name=k8s-tutorial-api ./k8s --set replicaCount=3,image.tag=1.1.0
@@ -353,7 +353,7 @@ And, like before, we update our chart's dependencies.
 helm dep update ./k8s
 ```
 
-Now we need to customize our [configuration](https://github.com/helm/charts/tree/master/stable/mysql#configuration).  We'll want to provide our database name, username, and password.  The last part is sensitive--we wouldn't want to push our password to a public repository, after all.  K8s provides [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) for just this sort of thing.  Secrets can be created from files, and we'll use that method to create a database password secret.
+Now we need to customize our [configuration](https://github.com/helm/charts/tree/master/stable/mysql#configuration).  We'll want to provide our database name, username, and password.  The last part is sensitive--we wouldn't want to push our password to a public repository, after all.  K8s provides [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) for just this sort of thing.  Secrets can be created in various ways, but we'll create ours using files.
 
 ```
 echo -n "QC71yg2JGPNpuzoM" > mysql-password
@@ -362,7 +362,7 @@ kubectl create secret generic k8s-tutorial-db-pass --from-file=./mysql-root-pass
 rm mysql-password mysql-root-password
 ```
 
-The above commands assume you're using some sort of \*nix environment.  If not, you can create the two files using a text editor, but bear in mind that some editors automatically add newlines at the end of files, and that will cause problems with the secret.  Also, the files are removed after storing the secret so that they're not inadvertently committed along side the code.  Outside of the k8s context, where to keep your passwords and how to share them with other developers is up to you.  LastPass or the likes might be a good choice.  Anyway, the files must be named `mysql-password` and `mysql-root-password`, as shown in the [MySQL chart's notes](https://github.com/helm/charts/blob/master/stable/mysql/templates/NOTES.txt).
+The above commands assume you're using some sort of \*nix environment.  If not, you can create the two files using a text editor, but bear in mind that some editors automatically add newlines at the end of files, and that will cause problems with the secret.  I also used `echo` to create the files for convenience, which means that the commands will be present in history.  If you're on a shared system that might not be acceptable.  Also, the files are removed after storing the secret so that they're not inadvertently committed along side the code.  Outside of the k8s context, where to keep your passwords and how to share them with other developers is up to you.  LastPass or the likes might be a good choice.  Anyway, the files must be named `mysql-password` and `mysql-root-password`, as shown in the [MySQL chart's notes](https://github.com/helm/charts/blob/master/stable/mysql/templates/NOTES.txt).
 
 Now we need to specify values for the MySQL subchart.  Overriding subchart values is discussed in depth [in the Helm docs](https://docs.helm.sh/chart_template_guide/#subcharts-and-global-values).  We'll customize the database, user, and passwords, plus we'll add some initialization scripts to create a table and fill in some data.  Generally a migration tool would be used for that last part, but for our needs this will suffice.  Here's the latest and greatest [`k8s/values.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.3.0/k8s/values.yaml) file.
 
