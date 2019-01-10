@@ -6,7 +6,7 @@ The deployment challenge described above led to the advent of container orchestr
 
 #### Goal
 
-For me, getting started with k8s was quite a challenge.  The learning curve is steep, and I had a hard time finding up-to-date tutorials that involved deploying a system with dependencies.  In this tutorial we'll create an API application and bake that into a Docker image.  We'll then deploy that image to a local k8s cluster and expose it to external traffic through a load balancer.  Lastly, we'll add a database dependency into the mix and set up communication between the API and database services.
+For me, getting started with k8s was quite a challenge.  The learning curve is steep, and I had a hard time finding up-to-date tutorials that involve deploying a system with dependencies.  In this tutorial we'll create an API application and bake that into a Docker image.  We'll then deploy that image to a local k8s cluster and expose it to external traffic through a load balancer.  Lastly, we'll add a database dependency into the mix and set up communication between the API and database services.
 
 #### Prerequisites
 
