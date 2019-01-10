@@ -111,7 +111,7 @@ helm init
 
 #### Create a Helm Chart for the API
 
-Helm has a handy chart generator that can help you to get started building your first chart, but we're going to build ours manually for the sake of learning.  Let's start off by making a new `k8s` directory with a `templates` folder in it.  Inside the templates folder, create a [`deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/templates/deployment.yaml) file.
+Helm has a handy chart generator that can help you to get started building your first chart, but we're going to build ours manually for the sake of learning.  Let's start off by making a new `k8s` directory with a `templates` folder in it.  Inside the `templates` folder, create a [`deployment.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.1.0/k8s/templates/deployment.yaml) file.
 
 ```
 apiVersion: apps/v1
