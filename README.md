@@ -17,7 +17,7 @@ If you’re going to follow along with the remainder of this tutorial, the follo
 3. Kubernetes version 1.13.
 4. Minikube version 0.32.
 5. Helm version 2.12.
-6. Node.js version 10 (optional).
+6. Node.js version 10.  (This one's optional.  If you prefer you can use [my code](https://github.com/benbotto/k8s-tutorial-api).)
 
 #### Making an API Image
 
