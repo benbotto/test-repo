@@ -91,7 +91,7 @@ docker push avejidah/k8s-tutorial-api:latest
 docker push avejidah/k8s-tutorial-api:<VERSION>
 ```
 
-Where `<VERSION>` matches the version in your package.json file (e.g. `1.0.1`).  I tagged this as version 1.0.1, and you can see the source here: [https://github.com/benbotto/k8s-tutorial-api/tree/1.0.1](https://github.com/benbotto/k8s-tutorial-api/tree/1.0.1).
+Obviously, swap out `<VERSION>` such that it matches the version of your application.  I tagged this as version 1.0.1, and you can see the source here: [https://github.com/benbotto/k8s-tutorial-api/tree/1.0.1](https://github.com/benbotto/k8s-tutorial-api/tree/1.0.1).
 
 #### Make a Local Cluster and Initialize Tiller
 
