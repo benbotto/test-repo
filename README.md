@@ -408,7 +408,7 @@ k8s-tutorial-api-nginx-ingress-controller-845877d6b6-x6psn        1/1     Runnin
 k8s-tutorial-api-nginx-ingress-default-backend-86998f4669-lk9r9   1/1     Running   0          3m7s
 ```
 
-If you want, you can get a bash shell running in the MySQL container and take a look around.  Just exec bash in the `k8s-tutorial-api-mysql` pod.  (Your pod name will be slightly different than mine.)
+If you want, you can get a bash shell running in the MySQL container and take a look around.  Just `exec` bash against `k8s-tutorial-api-mysql` pod which, by default, executes a command against the first container in the pod.  (Your pod name will be slightly different than mine.)
 
 ```
 kubectl exec -it k8s-tutorial-api-mysql-5f6bccc754-zwb5k -- bash
