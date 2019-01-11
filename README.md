@@ -307,7 +307,7 @@ spec:
           servicePort: 80
 ```
 
-The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), that's why `false` is quoted.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.  Update the chart's dependencies so so that `nginx-ingress` is pulled in.
+The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), that's why `false` is quoted.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.  Update the chart's dependencies so that `nginx-ingress` is pulled in.
 
 ```
 helm dep update ./k8s
