@@ -266,7 +266,7 @@ You can connect to the service via a web browser by issuing the command `minikub
 
 #### Adding Ingress
 
-Right now, connecting to our API is a bit obscure given that it's only accessible over an ephemeral port.  Ideally we should be able to connect to our API on port 80.  We'll use an [ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/) to manage external access.  An ingress resource defines rules that allow inbound connections to access services within the cluster.  Those rules require an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) to be running inside the cluster.  There are a number of different controllers to choose from, and the default varies between cloud providers.  Minikube by default uses the [nginx-ingress](https://github.com/helm/charts/tree/master/stable/nginx-ingress) controller, and that's the one we're going to use.  Since it's Minikube's default, we could use it implicitly, but it's best to explicitly install a controller as a dependency.  That way if we later deploy to a cloud provider we can rest assured that the same controller will be used in all our environments.
+Right now, connecting to our API is a bit obscure given that it's only accessible over an ephemeral port.  Ideally we should be able to connect to our API on port 80.  We'll use an [ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/) to manage external access.  An ingress resource defines rules that allow inbound connections to access services within the cluster.  Those rules require an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers) to be running inside the cluster.  There are a number of different controllers to choose from, and the default varies between cloud providers.  Minikube by default uses the [`nginx-ingress`](https://github.com/helm/charts/tree/master/stable/nginx-ingress) controller, and that's the one we're going to use.  Since it's Minikube's default, we could use it implicitly by [enabling the ingress addon](https://kubernetes.github.io/ingress-nginx/deploy/#minikube), but it's best to explicitly install a controller as a dependency.  That way if we later deploy to a cloud provider we can rest assured that the same controller will be used in all our environments.
 
 Like the applications we develop, Helm charts can have dependencies.  Helm is, after all, a package manager.  Subcharts can be manually added to our `k8s/charts`  directory, or, alternatively, we can add a `requirements.yaml` file and declare dependencies in a few short lines.  We'll use the latter method, so create [`k8s/requirements.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/requirements.yaml).
 
@@ -277,9 +277,9 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
 ```
 
-Note that the repository url is the "stable" Helm repository, found by executing `helm repo list`, and 1.1.3 is the latest version of the nginx-ingress *chart* at the time of writing.  You can find packages using `helm search`.
+Note that the repository url is the "stable" Helm repository, found by executing `helm repo list`, and 1.1.3 is the latest version of the `nginx-ingress` *chart* at the time of writing.  You can find packages using `helm search`.
 
-Now we just need to define some ingress rules, specifying where to route incoming traffic.  Our routing rules are simple--route all HTTP traffic to our API service--but keep in mind that the nginx-ingress controller provides powerful capabilities.  It allows you to route traffic to different services based on path (a.k.a. layer-7 routing), add sticky sessions, do TLS terminiation, etc.  Anyway, go on and define [`k8s/templates/ingress.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/templates/ingress.yaml).
+Now we just need to define some ingress rules, specifying where to route incoming traffic.  Our routing rules are simple--route all HTTP traffic to our API service--but keep in mind that the `nginx-ingress` controller provides powerful capabilities.  It allows you to route traffic to different services based on path (a.k.a. layer-7 routing), add sticky sessions, do TLS terminiation, etc.  Anyway, go on and define [`k8s/templates/ingress.yaml`](https://raw.githubusercontent.com/benbotto/k8s-tutorial-api/1.2.0/k8s/templates/ingress.yaml).
 
 ```
 apiVersion: extensions/v1beta1
@@ -307,15 +307,7 @@ spec:
           servicePort: 80
 ```
 
-The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), that's why `false` is quoted.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.
-
-We need to enable the ingress addon in Minikube.
-
-```
-minikube addons enable ingress
-```
-
-Then we can update our chart's dependencies.
+The `kubernetes.io/ingress-class` annotation says explicitly that we'll be using the nginx controller.  We're using plain HTTP, so we don't want to redirect traffic to HTTPS or use HTTP strict transport security (HTST). Hence, we've disabled `nginx.ingress.kubernetes.io/ssl-redirect` and `ingress.kubernetes.io/hsts`.  (Note that the nginx controller [requires annotation values to be strings](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md), that's why `false` is quoted.)  As far as rule specifications, we're simply sending all traffic to our API backend on port 80, per our service definition.  Update the chart's dependencies so so that `nginx-ingress` is pulled in.
 
 ```
 helm dep update ./k8s
@@ -545,7 +537,13 @@ If everything goes smoothly, you should be able to hit the new `/users` route an
 
 #### Cleaning Up
 
-That concludes the tutorial.  Hopefully it helps you to get started with deployment orchestration.  If you want to clean everything up, here's how you can wipe out Minikube.
+That concludes the tutorial.  Hopefully it helps you to get started with deployment orchestration.  If you want to clean everything up, you can delete and purge the release.
+
+```
+helm delete --purge k8s-tutorial-api
+```
+
+Or, if you want to completely wipe out Minikube.
 
 ```
 minikube stop
@@ -555,4 +553,3 @@ kubectl config unset clusters.minikube
 kubectl config unset users.minikube
 kubectl config unset contexts.minikube
 ```
-
